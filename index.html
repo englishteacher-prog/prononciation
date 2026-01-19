@@ -1,0 +1,95 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+  <meta http-equiv="Content-Style-Type" content="text/css">
+  <title></title>
+  <meta name="Generator" content="Cocoa HTML Writer">
+  <meta name="CocoaVersion" content="2575.7">
+  <style type="text/css">
+    p.p1 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica}
+    p.p2 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica; min-height: 14.0px}
+  </style>
+</head>
+<body>
+<p class="p1">&lt;!DOCTYPE html&gt;</p>
+<p class="p1">&lt;html lang="fr"&gt;</p>
+<p class="p1">&lt;head&gt;</p>
+<p class="p1">&lt;meta charset="UTF-8"&gt;</p>
+<p class="p1">&lt;title&gt;Exercice de prononciation&lt;/title&gt;</p>
+<p class="p1">&lt;meta name="viewport" content="width=device-width, initial-scale=1"&gt;</p>
+<p class="p1">&lt;style&gt;</p>
+<p class="p1">body {</p>
+<p class="p1"><span class="Apple-converted-space">  </span>font-family: Arial, sans-serif;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>max-width: 700px;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>margin: auto;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>padding: 20px;</p>
+<p class="p1">}</p>
+<p class="p1">button {</p>
+<p class="p1"><span class="Apple-converted-space">  </span>padding: 12px 18px;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>font-size: 16px;</p>
+<p class="p1">}</p>
+<p class="p1">#result {</p>
+<p class="p1"><span class="Apple-converted-space">  </span>margin-top: 20px;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>font-size: 18px;</p>
+<p class="p1">}</p>
+<p class="p1">.good { color: green; }</p>
+<p class="p1">.bad { color: red; }</p>
+<p class="p1">&lt;/style&gt;</p>
+<p class="p1">&lt;/head&gt;</p>
+<p class="p2"><br></p>
+<p class="p1">&lt;body&gt;</p>
+<p class="p2"><br></p>
+<p class="p1">&lt;h2&gt;🎤 Exercice de prononciation&lt;/h2&gt;</p>
+<p class="p2"><br></p>
+<p class="p1">&lt;p&gt;&lt;strong&gt;Phrase à prononcer :&lt;/strong&gt;&lt;/p&gt;</p>
+<p class="p1">&lt;p id="target"&gt;I would like a glass of water, please.&lt;/p&gt;</p>
+<p class="p2"><br></p>
+<p class="p1">&lt;button onclick="start()"&gt;🎙️ Parler&lt;/button&gt;</p>
+<p class="p2"><br></p>
+<p class="p1">&lt;div id="result"&gt;&lt;/div&gt;</p>
+<p class="p2"><br></p>
+<p class="p1">&lt;script&gt;</p>
+<p class="p1">const target = document.getElementById("target").innerText.toLowerCase();</p>
+<p class="p2"><br></p>
+<p class="p1">function start() {</p>
+<p class="p1"><span class="Apple-converted-space">  </span>if (!('webkitSpeechRecognition' in window)) {</p>
+<p class="p1"><span class="Apple-converted-space">    </span>alert("Votre navigateur ne supporte pas la reconnaissance vocale. Utilisez Chrome.");</p>
+<p class="p1"><span class="Apple-converted-space">    </span>return;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>}</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">  </span>const recognition = new webkitSpeechRecognition();</p>
+<p class="p1"><span class="Apple-converted-space">  </span>recognition.lang = "en-US";</p>
+<p class="p1"><span class="Apple-converted-space">  </span>recognition.start();</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">  </span>recognition.onresult = function(event) {</p>
+<p class="p1"><span class="Apple-converted-space">    </span>const spoken = event.results[0][0].transcript.toLowerCase();</p>
+<p class="p1"><span class="Apple-converted-space">    </span>evaluate(spoken);</p>
+<p class="p1"><span class="Apple-converted-space">  </span>};</p>
+<p class="p1">}</p>
+<p class="p2"><br></p>
+<p class="p1">function evaluate(spoken) {</p>
+<p class="p1"><span class="Apple-converted-space">  </span>const targetWords = target.split(" ");</p>
+<p class="p1"><span class="Apple-converted-space">  </span>const spokenWords = spoken.split(" ");</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">  </span>let match = 0;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>targetWords.forEach(word =&gt; {</p>
+<p class="p1"><span class="Apple-converted-space">    </span>if (spokenWords.includes(word)) match++;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>});</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">  </span>const score = Math.round((match / targetWords.length) * 100);</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">  </span>document.getElementById("result").innerHTML = `</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;p&gt;&lt;strong&gt;Tu as dit :&lt;/strong&gt; ${spoken}&lt;/p&gt;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;p&gt;&lt;strong&gt;Score :&lt;/strong&gt; ${score}%&lt;/p&gt;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;p class="${score &gt;= 70 ? 'good' : 'bad'}"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>${score &gt;= 70 ? "✅ Bonne prononciation !" : "❌ Réessaie"}</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;/p&gt;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>`;</p>
+<p class="p1">}</p>
+<p class="p1">&lt;/script&gt;</p>
+<p class="p2"><br></p>
+<p class="p1">&lt;/body&gt;</p>
+<p class="p1">&lt;/html&gt;</p>
+</body>
+</html>
